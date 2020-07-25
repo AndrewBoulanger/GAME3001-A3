@@ -47,6 +47,9 @@ void PlayScene::update()
 	CollisionManager::AABBCheck(m_pPlayer, m_pObstacle);
 
 	m_setGridLOS();
+
+	if (m_bPatrolMode)
+		m_pPlaneSprite->m_move2TargetNode();
 }
 
 void PlayScene::clean()
@@ -242,11 +245,12 @@ void PlayScene::m_displayGrid()
 	{
 		for (int col = 0; col < Config::COL_NUM; ++col)
 		{
+			auto colour = (!m_pGrid[row*Config::COL_NUM + col]->getLOS()) ? glm::vec4(1.0f, 0.0f, 0.0f, 1.0f) : glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+
 			Util::DrawRect(m_pGrid[row * Config::COL_NUM + col]->getTransform()->position - glm::vec2(m_pGrid[row * Config::COL_NUM + col]->getWidth() * 0.5f, m_pGrid[row * Config::COL_NUM + col]->getHeight() * 0.5f),
 				Config::TILE_SIZE, Config::TILE_SIZE);
 
-			Util::DrawRect(m_pGrid[row * Config::COL_NUM + col]->getTransform()->position,
-				5, 5);
+			Util::DrawRect(m_pGrid[row * Config::COL_NUM + col]->getTransform()->position, 5, 5, colour);
 		}
 	}
 }
@@ -273,6 +277,18 @@ void PlayScene::m_setGridLOS()
 	}
 }
 
+
+
+void PlayScene::m_move2TargetNode()
+{
+	if (m_bPatrolMode)
+	{
+		m_ptargetNode = m_pPatrolPath[m_targetNodeIndex];
+		auto targetVector = Util::normalize(m_ptargetNode->getTransform()->position - m_pPlaneSprite->getTransform()->position);
+
+	}
+}
+
 void PlayScene::start()
 {
 	m_bPlayerHasLOS = false;
@@ -284,10 +300,13 @@ void PlayScene::start()
 	
 	// Plane Sprite
 	m_pPlaneSprite = new Plane();
+	m_pPlaneSprite->getTransform()->position.y = 40;
+	m_pPlaneSprite->getTransform()->position.x = 40;
 	addChild(m_pPlaneSprite);
 
 	// Player Sprite
 	m_pPlayer = new Player();
+	m_pPlayer->getTransform()->position.y = 400;
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
 
@@ -295,6 +314,8 @@ void PlayScene::start()
 	m_pObstacle = new Obstacle();
 	addChild(m_pObstacle);
 	
+	m_pPlaneSprite->m_setPath(m_pGrid[0], m_pGrid[Config::COL_NUM - 1],
+		m_pGrid[Config::COL_NUM * Config::ROW_NUM - 1], m_pGrid[Config::COL_NUM * Config::ROW_NUM - Config::COL_NUM]);
 }
 
 

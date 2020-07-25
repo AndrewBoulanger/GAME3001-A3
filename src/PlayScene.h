@@ -48,6 +48,12 @@ private:
 	bool m_bDebugKeys[NUM_OF_DEBUG_KEYS];
 
 	std::vector<PathNode*> m_pGrid;
+
+	std::vector<PathNode*> m_pPatrolPath;
+	int m_targetNodeIndex;
+	PathNode* m_ptargetNode;
+	void m_move2TargetNode();
+
 	
 };
 
