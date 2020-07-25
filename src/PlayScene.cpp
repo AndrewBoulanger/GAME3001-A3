@@ -243,7 +243,7 @@ void PlayScene::m_displayGrid()
 		for (int col = 0; col < Config::COL_NUM; ++col)
 		{
 			Util::DrawRect(m_pGrid[row * Config::COL_NUM + col]->getTransform()->position - glm::vec2(m_pGrid[row * Config::COL_NUM + col]->getWidth() * 0.5f, m_pGrid[row * Config::COL_NUM + col]->getHeight() * 0.5f),
-				40, 40);
+				Config::TILE_SIZE, Config::TILE_SIZE);
 
 			Util::DrawRect(m_pGrid[row * Config::COL_NUM + col]->getTransform()->position,
 				5, 5);
