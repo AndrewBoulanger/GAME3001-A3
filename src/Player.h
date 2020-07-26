@@ -22,6 +22,8 @@ public:
 	void setAnimationState(PlayerAnimationState new_state);
 
 private:
+	bool m_isMoving;
+	bool m_FacingRight;
 	void m_buildAnimations();
 
 	PlayerAnimationState m_currentAnimationState;

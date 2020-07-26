@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "TextureManager.h"
+#include "EventManager.h"
 
 Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
 {
@@ -62,6 +63,94 @@ void Player::draw()
 
 void Player::update()
 {
+
+	// handle player movement with GameController
+	if (SDL_NumJoysticks() > 0)
+	{
+		if (EventManager::Instance().getGameController(0) != nullptr)
+		{
+			const auto deadZone = 10000;
+			m_isMoving = true;
+			if (EventManager::Instance().getGameController(0)->LEFT_STICK_Y > deadZone)
+			{
+				getRigidBody()->velocity = glm::vec2(0.0f, -5.0f);
+			}
+			else if (EventManager::Instance().getGameController(0)->LEFT_STICK_Y < -deadZone)
+			{
+				getRigidBody()->velocity = glm::vec2(0.0f, 5.0f);
+			}
+			else if (EventManager::Instance().getGameController(0)->LEFT_STICK_X > deadZone)
+			{
+				m_FacingRight = true;
+
+				getRigidBody()->velocity = glm::vec2(5.0f, 0.0f);
+			}
+			else if (EventManager::Instance().getGameController(0)->LEFT_STICK_X < -deadZone)
+			{
+				m_FacingRight = false;
+
+				getRigidBody()->velocity = glm::vec2(-5.0f, 0.0f);
+			}
+			else
+			{
+				m_isMoving = false;
+				if (m_FacingRight)
+				{
+					setAnimationState(PLAYER_IDLE_RIGHT);
+				}
+				else
+				{
+					setAnimationState(PLAYER_IDLE_LEFT);
+				}
+			}
+		}
+	}
+
+
+	// handle player movement if no Game Controllers found
+	if (SDL_NumJoysticks() < 1)
+	{
+		m_isMoving = true;
+		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_W))
+		{
+			getRigidBody()->velocity = glm::vec2(0.0f, -5.0f);
+		}
+		else if(EventManager::Instance().isKeyDown(SDL_SCANCODE_S))
+		{
+			getRigidBody()->velocity = glm::vec2(0.0f, 5.0f);
+		}
+		else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_A))
+		{
+			m_FacingRight = false;
+
+			getRigidBody()->velocity = glm::vec2(-5.0f, 0.0f);
+		}
+		else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_D))
+		{
+			m_FacingRight = true;
+
+			getRigidBody()->velocity = glm::vec2(5.0f, 0.0f);
+		}
+		else
+		{
+			m_isMoving = false;
+			if (m_FacingRight)
+			{
+				setAnimationState(PLAYER_IDLE_RIGHT);
+			}
+			else
+			{
+				setAnimationState(PLAYER_IDLE_LEFT);
+			}
+		}
+	}
+
+	if (m_isMoving)
+	{
+		m_FacingRight ? setAnimationState(PLAYER_RUN_RIGHT) : setAnimationState(PLAYER_RUN_LEFT);
+		getTransform()->position += getRigidBody()->velocity;
+		getRigidBody()->velocity *= getRigidBody()->velocity * 0.9f;
+	}
 }
 
 void Player::clean()
