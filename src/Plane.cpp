@@ -66,11 +66,13 @@ void Plane::m_move2TargetNode()
 	m_ptargetNode = m_pPatrolPath[m_targetNodeIndex];
 	auto targetVector = Util::normalize(m_ptargetNode->getTransform()->position - getTransform()->position);
 	
-	m_angle = (targetVector.y > 0) ? 180: targetVector.x * 90;  //sets the 4 possible angles of the plane
+	m_angle = (targetVector.y > 0.8) ? 180: targetVector.x * 90;  //sets the 4 possible angles of the plane
 	
+	std::cout << targetVector.y << std::endl;
+
 	getRigidBody()->velocity = targetVector;
 	getTransform()->position += getRigidBody()->velocity * getRigidBody()->maxSpeed;
-	if (getTransform()->position == m_ptargetNode->getTransform()->position)
+	if (Util::distance( getTransform()->position, m_ptargetNode->getTransform()->position) < 5.0f)
 	{
 		m_targetNodeIndex++;
 		if (m_targetNodeIndex > m_pPatrolPath.size() - 1)
