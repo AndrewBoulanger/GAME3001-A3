@@ -3,16 +3,18 @@
 #include "EventManager.h"
 #include "SoundManager.h"
 
-Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
+Player::Player(): m_currentAnimationState(PLAYER_IDLE)
 {
 	TextureManager::Instance()->loadSpriteSheet(
-		"../Assets/sprites/atlas.txt",
-		"../Assets/sprites/atlas.png", 
-		"spritesheet");
-	SoundManager::Instance().load("audio/metalWalk.wav", "pWalk", SOUND_SFX);
+		"../Assets/sprites/Pirate1.txt",
+		"../Assets/sprites/Pirate1.png",
+		"Pirate");
 
-	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("spritesheet"));
+
+	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("Pirate"));
 	
+	SoundManager::Instance().load("../Assets/audio/metalWalk.wav", "pWalk", SOUND_SFX);
+
 	// set frame width
 	setWidth(53);
 
@@ -41,21 +43,25 @@ void Player::draw()
 	// draw the player according to animation state
 	switch(m_currentAnimationState)
 	{
-	case PLAYER_IDLE_RIGHT:
-		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("idle"),
-			x, y, 0.12f, 0, 255, true);
+	case PLAYER_IDLE:
+		TextureManager::Instance()->playAnimation("Pirate", getAnimation("idle"),
+			x, y, 0.12f, 0, 255, true, (SDL_RendererFlip)m_FacingRight);
 		break;
-	case PLAYER_IDLE_LEFT:
-		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("idle"),
-			x, y, 0.12f, 0, 255, true, SDL_FLIP_HORIZONTAL);
+	case PLAYER_RUN:
+		TextureManager::Instance()->playAnimation("Pirate", getAnimation("run"),
+			x, y, 0.25f, 0, 255, true, (SDL_RendererFlip)m_FacingRight);
 		break;
-	case PLAYER_RUN_RIGHT:
-		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("run"),
-			x, y, 0.25f, 0, 255, true);
+	case PLAYER_SHOOT:
+		TextureManager::Instance()->playAnimation("Pirate", getAnimation("shoot"),
+			x-10, y-10, 0.1f, 0, 255, true, (SDL_RendererFlip)m_FacingRight);
 		break;
-	case PLAYER_RUN_LEFT:
-		TextureManager::Instance()->playAnimation("spritesheet", getAnimation("run"),
-			x, y, 0.25f, 0, 255, true, SDL_FLIP_HORIZONTAL);
+	case PLAYER_ATTACK:
+		TextureManager::Instance()->playAnimation("Pirate", getAnimation("attack"),
+			x, y, 0.1f, 0, 255, true, (SDL_RendererFlip)m_FacingRight);
+		break;
+	case PLAYER_HURT:
+		break;
+	case PLAYER_DEAD:
 		break;
 	default:
 		break;
@@ -65,104 +71,112 @@ void Player::draw()
 
 void Player::update()
 {
-
-	// handle player movement with GameController
-	if (SDL_NumJoysticks() > 0)
+	if (m_currentAnimationState != PLAYER_DEAD)
 	{
-		if (EventManager::Instance().getGameController(0) != nullptr)
+		// handle player movement with GameController
+		if (SDL_NumJoysticks() > 0)
 		{
-			const auto deadZone = 10000;
-			m_isMoving = true;
-			if (EventManager::Instance().getGameController(0)->LEFT_STICK_Y > deadZone)
+			if (EventManager::Instance().getGameController(0) != nullptr)
 			{
-				getRigidBody()->velocity = glm::vec2(0.0f, -5.0f);
-			}
-			else if (EventManager::Instance().getGameController(0)->LEFT_STICK_Y < -deadZone)
-			{
-				getRigidBody()->velocity = glm::vec2(0.0f, 5.0f);
-			}
-			else if (EventManager::Instance().getGameController(0)->LEFT_STICK_X > deadZone)
-			{
-				m_FacingRight = true;
+				const auto deadZone = 10000;
+				m_isMoving = true;
+				if (EventManager::Instance().getGameController(0)->LEFT_STICK_Y > deadZone)
+				{
+					getRigidBody()->velocity = glm::vec2(0.0f, -5.0f);
+				}
+				else if (EventManager::Instance().getGameController(0)->LEFT_STICK_Y < -deadZone)
+				{
+					getRigidBody()->velocity = glm::vec2(0.0f, 5.0f);
+				}
+				else if (EventManager::Instance().getGameController(0)->LEFT_STICK_X > deadZone)
+				{
+					m_FacingRight = true;
 
-				getRigidBody()->velocity = glm::vec2(5.0f, 0.0f);
+					getRigidBody()->velocity = glm::vec2(5.0f, 0.0f);
+				}
+				else if (EventManager::Instance().getGameController(0)->LEFT_STICK_X < -deadZone)
+				{
+					m_FacingRight = false;
+
+					getRigidBody()->velocity = glm::vec2(-5.0f, 0.0f);
+				}
+				else
+				{
+					m_isMoving = false;
+					setAnimationState(PLAYER_IDLE);
+				}
+
+				if (EventManager::Instance().getGameController(0)->A_BUTTON)
+				{
+					shoot();
+				}
+				if (EventManager::Instance().getGameController(0)->B_BUTTON)
+				{
+					punch();
+				}
 			}
-			else if (EventManager::Instance().getGameController(0)->LEFT_STICK_X < -deadZone)
+		}
+
+
+		// handle player movement if no Game Controllers found
+		if (SDL_NumJoysticks() < 1)
+		{
+			m_isMoving = true;
+			if (EventManager::Instance().isKeyDown(SDL_SCANCODE_W))
+			{
+				getRigidBody()->velocity = glm::vec2(0.0f, -2.0f);
+			}
+			else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_S))
+			{
+				getRigidBody()->velocity = glm::vec2(0.0f, 2.0f);
+			}
+			else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_A))
 			{
 				m_FacingRight = false;
 
-				getRigidBody()->velocity = glm::vec2(-5.0f, 0.0f);
+				getRigidBody()->velocity = glm::vec2(-2.0f, 0.0f);
+			}
+			else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_D))
+			{
+				m_FacingRight = true;
+
+				getRigidBody()->velocity = glm::vec2(2.0f, 0.0f);
 			}
 			else
 			{
 				m_isMoving = false;
-				if (m_FacingRight)
-				{
-					setAnimationState(PLAYER_IDLE_RIGHT);
-				}
-				else
-				{
-					setAnimationState(PLAYER_IDLE_LEFT);
-				}
+				setAnimationState(PLAYER_IDLE);
+
+			}
+
+			if (EventManager::Instance().getMouseButton(0))
+			{
+				shoot();
+			}
+			if (EventManager::Instance().getMouseButton(2))
+			{
+				punch();
 			}
 		}
-	}
 
 
-	// handle player movement if no Game Controllers found
-	if (SDL_NumJoysticks() < 1)
-	{
-		m_isMoving = true;
-		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_W))
+		if (m_isMoving)
 		{
-			getRigidBody()->velocity = glm::vec2(0.0f, -5.0f);
-		}
-		else if(EventManager::Instance().isKeyDown(SDL_SCANCODE_S))
-		{
-			getRigidBody()->velocity = glm::vec2(0.0f, 5.0f);
-		}
-		else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_A))
-		{
-			m_FacingRight = false;
-
-			getRigidBody()->velocity = glm::vec2(-5.0f, 0.0f);
-		}
-		else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_D))
-		{
-			m_FacingRight = true;
-
-			getRigidBody()->velocity = glm::vec2(5.0f, 0.0f);
+			setAnimationState(PLAYER_RUN);
+			getTransform()->position += getRigidBody()->velocity;
+			getRigidBody()->velocity *= getRigidBody()->velocity * 0.9f;
+			if (m_walkingSoundPlaying == false)
+			{
+				SoundManager::Instance().playSound("pWalk", -1, 0);
+				m_walkingSoundPlaying = true;
+			}
 		}
 		else
 		{
-			m_isMoving = false;
-			if (m_FacingRight)
-			{
-				setAnimationState(PLAYER_IDLE_RIGHT);
-			}
-			else
-			{
-				setAnimationState(PLAYER_IDLE_LEFT);
-			}
+			Mix_HaltChannel(0);
+			m_walkingSoundPlaying = false;
 		}
 	}
-
-	if (m_isMoving)
-	{
-		m_FacingRight ? setAnimationState(PLAYER_RUN_RIGHT) : setAnimationState(PLAYER_RUN_LEFT);
-		getTransform()->position += getRigidBody()->velocity;
-		getRigidBody()->velocity *= getRigidBody()->velocity * 0.9f;
-		if (m_walkingSoundPlaying == false)
-		{
-			SoundManager::Instance().playSound("pWalk", 0, 0);
-			m_walkingSoundPlaying = true;
-		}
-	}
-	else
-	{
-		m_walkingSoundPlaying = false;
-	}
-	
 }
 
 void Player::clean()
@@ -179,20 +193,65 @@ void Player::m_buildAnimations()
 	Animation idleAnimation = Animation();
 
 	idleAnimation.name = "idle";
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-0"));
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-1"));
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-2"));
-	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-idle-3"));
-
+	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("P-idle1"));
+	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("P-idle2"));
+	idleAnimation.frames.push_back(getSpriteSheet()->getFrame("P-idle3"));
+	
 	setAnimation(idleAnimation);
+
 
 	Animation runAnimation = Animation();
 
 	runAnimation.name = "run";
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-0"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-1"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-2"));
-	runAnimation.frames.push_back(getSpriteSheet()->getFrame("megaman-run-3"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("P-run1"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("P-run2"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("P-run3"));
+	runAnimation.frames.push_back(getSpriteSheet()->getFrame("P-run4"));
 
 	setAnimation(runAnimation);
+
+
+	Animation shootAnimation = Animation();
+
+	shootAnimation.name = "shoot";
+	shootAnimation.frames.push_back(getSpriteSheet()->getFrame("P-gun1"));
+	shootAnimation.frames.push_back(getSpriteSheet()->getFrame("P-gun2"));
+	shootAnimation.frames.push_back(getSpriteSheet()->getFrame("P-gun3"));
+
+	setAnimation(shootAnimation);
+
+	Animation attackAnimation = Animation();
+
+	attackAnimation.name = "attack";
+	attackAnimation.frames.push_back(getSpriteSheet()->getFrame("P-sword1"));
+	attackAnimation.frames.push_back(getSpriteSheet()->getFrame("P-sword2"));
+	attackAnimation.frames.push_back(getSpriteSheet()->getFrame("P-sword3"));
+
+	setAnimation(attackAnimation);
+
+	Animation hurtAnimation = Animation();
+
+	hurtAnimation.name = "hurt";
+	hurtAnimation.frames.push_back(getSpriteSheet()->getFrame("P-hit"));
+	hurtAnimation.frames.push_back(getSpriteSheet()->getFrame("P-hit"));
+
+	setAnimation(hurtAnimation);
+
+	Animation deadAnimation = Animation();
+
+	deadAnimation.name = "dead";
+	deadAnimation.frames.push_back(getSpriteSheet()->getFrame("P-dead"));
+
+	setAnimation(deadAnimation);
+
+}
+
+void Player::shoot()
+{
+	setAnimationState(PLAYER_SHOOT);
+}
+
+void Player::punch()
+{
+	setAnimationState(PLAYER_ATTACK);
 }

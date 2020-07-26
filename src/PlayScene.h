@@ -3,7 +3,7 @@
 #define __PLAY_SCENE__
 
 #include "Scene.h"
-#include "Plane.h"
+#include "EnemyBase.h"
 #include "Player.h"
 #include "Button.h"
 #include "DebugKeys.h"
@@ -35,7 +35,7 @@ private:
 	// MEMBER VARIABLES
 	glm::vec2 m_mousePosition;
 
-	Plane* m_pPlaneSprite;
+	EnemyBase* m_pEnemySprite;
 	Player* m_pPlayer;
 	bool m_playerFacingRight;
 	bool m_bPlayerHasLOS;

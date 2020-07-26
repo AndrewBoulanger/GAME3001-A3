@@ -5,11 +5,11 @@
 Plane::Plane()
 {
 	TextureManager::Instance()->loadSpriteSheet(
-		"../Assets/sprites/atlas.txt",
-		"../Assets/sprites/atlas.png", 
-		"spritesheet");
+		"../Assets/sprites/Assassin.txt",
+		"../Assets/sprites/Assassin.png", 
+		"Assassin");
 
-	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("spritesheet"));
+	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("Assassin"));
 
 	// set frame width
 	setWidth(65);
@@ -40,8 +40,8 @@ void Plane::draw()
 
 	// draw the plane sprite with simple propeller animation
 	TextureManager::Instance()->playAnimation(
-		"spritesheet", getAnimation("plane"),
-		x, y, 0.5f, m_angle, 255, true);
+		"Assassin", getAnimation("idle"),
+		x, y, 0.1f, m_angle, 255, true);
 }
 
 void Plane::update()
@@ -84,10 +84,10 @@ void Plane::m_buildAnimations()
 {
 	Animation planeAnimation = Animation();
 
-	planeAnimation.name = "plane";
-	planeAnimation.frames.push_back(getSpriteSheet()->getFrame("plane1"));
-	planeAnimation.frames.push_back(getSpriteSheet()->getFrame("plane2"));
-	planeAnimation.frames.push_back(getSpriteSheet()->getFrame("plane3"));
+	planeAnimation.name = "idle";
+	planeAnimation.frames.push_back(getSpriteSheet()->getFrame("A-idle1"));
+	planeAnimation.frames.push_back(getSpriteSheet()->getFrame("A-idle2"));
+	planeAnimation.frames.push_back(getSpriteSheet()->getFrame("A-idle3"));
 
 	setAnimation(planeAnimation);
 }

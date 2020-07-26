@@ -1,0 +1,108 @@
+{"frames": {
+
+"attackUnarmed3_3.png":
+{
+	"frame": {"x":414,"y":1,"w":35,"h":34},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":19,"y":38,"w":35,"h":34},
+	"sourceSize": {"w":88,"h":78}
+},
+"attackUnarmed_1.png":
+{
+	"frame": {"x":241,"y":1,"w":42,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":20,"y":11,"w":42,"h":47},
+	"sourceSize": {"w":72,"h":64}
+},
+"attackUnarmed_2.png":
+{
+	"frame": {"x":1,"y":1,"w":41,"h":56},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":41,"h":56},
+	"sourceSize": {"w":72,"h":64}
+},
+"dead_1.png":
+{
+	"frame": {"x":44,"y":1,"w":54,"h":15},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":43,"w":54,"h":15},
+	"sourceSize": {"w":64,"h":64}
+},
+"hit_1.png":
+{
+	"frame": {"x":285,"y":1,"w":46,"h":40},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":9,"y":16,"w":46,"h":40},
+	"sourceSize": {"w":64,"h":64}
+},
+"idle_1.png":
+{
+	"frame": {"x":208,"y":1,"w":31,"h":48},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":21,"y":10,"w":31,"h":48},
+	"sourceSize": {"w":64,"h":64}
+},
+"idle_2.png":
+{
+	"frame": {"x":107,"y":1,"w":30,"h":49},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":22,"y":9,"w":30,"h":49},
+	"sourceSize": {"w":64,"h":64}
+},
+"idle_3.png":
+{
+	"frame": {"x":139,"y":1,"w":30,"h":49},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":22,"y":9,"w":30,"h":49},
+	"sourceSize": {"w":64,"h":64}
+},
+"run_1.png":
+{
+	"frame": {"x":374,"y":1,"w":38,"h":45},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":25,"y":14,"w":38,"h":45},
+	"sourceSize": {"w":79,"h":76}
+},
+"run_2.png":
+{
+	"frame": {"x":327,"y":1,"w":45,"h":45},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":14,"y":10,"w":45,"h":45},
+	"sourceSize": {"w":79,"h":76}
+},
+"run_3.png":
+{
+	"frame": {"x":61,"y":1,"w":44,"h":50},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":15,"y":11,"w":44,"h":50},
+	"sourceSize": {"w":79,"h":76}
+},
+"run_4.png":
+{
+	"frame": {"x":171,"y":1,"w":35,"h":48},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":24,"y":14,"w":35,"h":48},
+	"sourceSize": {"w":79,"h":76}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "Assassin.png",
+	"format": "RGBA8888",
+	"size": {"w":449,"h":58},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:6fed15c09f309147f35347b31416ea2b:65a5318f61fba91336589c7432f194d1:45a0a8b1c25db3209ec929f7ffc3ff37$"
+}
+}

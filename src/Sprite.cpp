@@ -17,6 +17,11 @@ Animation& Sprite::getAnimation(const std::string& name)
 	return m_pAnimations[name];
 }
 
+Animation* Sprite::getCurrentAnimation()
+{
+	return currentAnim;
+}
+
 void Sprite::setSpriteSheet(SpriteSheet* sprite_sheet)
 {
 	m_pSpriteSheet = sprite_sheet;
@@ -27,6 +32,7 @@ void Sprite::setAnimation(const Animation& animation)
 	if(!m_animationExists(animation.name))
 	{
 		m_pAnimations[animation.name] = animation;
+		currentAnim = &m_pAnimations[animation.name];
 	}
 }
 

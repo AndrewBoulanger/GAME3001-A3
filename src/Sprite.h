@@ -21,6 +21,7 @@ public:
 	// getters
 	SpriteSheet* getSpriteSheet();
 	Animation& getAnimation(const std::string& name);
+	Animation* getCurrentAnimation();
 	
 	// setters
 	void setSpriteSheet(SpriteSheet* sprite_sheet);
@@ -28,6 +29,8 @@ public:
 private:
 	// private utility functions
 	bool m_animationExists(const std::string& id);
+
+	Animation* currentAnim;
 
 	SpriteSheet* m_pSpriteSheet;
 

@@ -19,13 +19,13 @@ void PlayScene::draw()
 	{
 		auto LOSColour = (!m_bPlayerHasLOS) ? glm::vec4(1.0f, 0.0f, 0.0f, 1.0f) : glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 
-		Util::DrawLine(m_pPlayer->getTransform()->position, m_pPlaneSprite->getTransform()->position, LOSColour);
+		Util::DrawLine(m_pPlayer->getTransform()->position, m_pEnemySprite->getTransform()->position, LOSColour);
 
 		Util::DrawRect(m_pPlayer->getTransform()->position - glm::vec2(m_pPlayer->getWidth() * 0.5f, m_pPlayer->getHeight() *0.5f),
 			m_pPlayer->getWidth(), m_pPlayer->getHeight());
 
-		Util::DrawRect(m_pPlaneSprite->getTransform()->position - glm::vec2(m_pPlaneSprite->getWidth() * 0.5f, m_pPlaneSprite->getHeight() * 0.5f),
-			m_pPlaneSprite->getWidth(), m_pPlaneSprite->getHeight());
+		Util::DrawRect(m_pEnemySprite->getTransform()->position - glm::vec2(m_pEnemySprite->getWidth() * 0.5f, m_pEnemySprite->getHeight() * 0.5f),
+			m_pEnemySprite->getWidth(), m_pEnemySprite->getHeight());
 
 		Util::DrawRect(m_pObstacle->getTransform()->position - glm::vec2(m_pObstacle->getWidth() * 0.5f, m_pObstacle->getHeight() * 0.5f),
 			m_pObstacle->getWidth(), m_pObstacle->getHeight());
@@ -40,16 +40,16 @@ void PlayScene::update()
 {
 	updateDisplayList();
 
-	m_bPlayerHasLOS = CollisionManager::LOSCheck(m_pPlayer, m_pPlaneSprite, m_pObstacle);
+	m_bPlayerHasLOS = CollisionManager::LOSCheck(m_pPlayer, m_pEnemySprite, m_pObstacle);
 
-	CollisionManager::AABBCheck(m_pPlayer, m_pPlaneSprite);
+	CollisionManager::AABBCheck(m_pPlayer, m_pEnemySprite);
 
 	CollisionManager::AABBCheck(m_pPlayer, m_pObstacle);
 
 	m_setGridLOS();
 
 	if (m_bPatrolMode)
-		m_pPlaneSprite->m_move2TargetNode();
+		m_pEnemySprite->m_move2TargetNode();
 }
 
 void PlayScene::clean()
@@ -213,7 +213,7 @@ void PlayScene::m_move2TargetNode()
 	if (m_bPatrolMode)
 	{
 		m_ptargetNode = m_pPatrolPath[m_targetNodeIndex];
-		auto targetVector = Util::normalize(m_ptargetNode->getTransform()->position - m_pPlaneSprite->getTransform()->position);
+		auto targetVector = Util::normalize(m_ptargetNode->getTransform()->position - m_pEnemySprite->getTransform()->position);
 
 	}
 }
@@ -227,26 +227,29 @@ void PlayScene::start()
 	m_bDebugMode = false;
 	m_bPatrolMode = false;
 	
-	// Plane Sprite
-	m_pPlaneSprite = new Plane();
-	m_pPlaneSprite->getTransform()->position.y = 40;
-	m_pPlaneSprite->getTransform()->position.x = 40;
-	addChild(m_pPlaneSprite);
-
 	// Player Sprite
 	m_pPlayer = new Player();
 	m_pPlayer->getTransform()->position.y = 400;
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
 
+	// Plane Sprite
+	m_pEnemySprite = new EnemyBase();
+	m_pEnemySprite->getTransform()->position.y = 40;
+	m_pEnemySprite->getTransform()->position.x = 40;
+	addChild(m_pEnemySprite);
+
 	// Obstacle Texture
 	m_pObstacle = new Obstacle();
 	addChild(m_pObstacle);
 	
-	m_pPlaneSprite->m_setPath(m_pGrid[0], m_pGrid[Config::COL_NUM - 1],
+	m_pEnemySprite->m_setPath(m_pGrid[0], m_pGrid[Config::COL_NUM - 1],
 		m_pGrid[Config::COL_NUM * Config::ROW_NUM - 1], m_pGrid[Config::COL_NUM * Config::ROW_NUM - Config::COL_NUM]);
 
-	SoundManager::Instance().load("Assets/audio/game.mp3", "bgm", SOUND_MUSIC);
+	SoundManager::Instance().load("../Assets/audio/game.mp3", "bgm", SOUND_MUSIC);
+	SoundManager::Instance().playMusic("bgm");
+	SoundManager::Instance().setMusicVolume(16);
+	SoundManager::Instance().setSoundVolume(100);
 	
 }
 

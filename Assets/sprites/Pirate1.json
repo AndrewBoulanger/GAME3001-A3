@@ -1,0 +1,132 @@
+{"frames": {
+
+"attackWeapon1_1.png":
+{
+	"frame": {"x":0,"y":152,"w":47,"h":52},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":35,"y":43,"w":47,"h":52},
+	"sourceSize": {"w":123,"h":101}
+},
+"attackWeapon1_2.png":
+{
+	"frame": {"x":0,"y":418,"w":67,"h":85},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":27,"y":6,"w":67,"h":85},
+	"sourceSize": {"w":123,"h":101}
+},
+"attackWeapon1_3.png":
+{
+	"frame": {"x":0,"y":503,"w":71,"h":91},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":35,"y":4,"w":71,"h":91},
+	"sourceSize": {"w":123,"h":101}
+},
+"attackWeapon3_1.png":
+{
+	"frame": {"x":45,"y":209,"w":53,"h":52},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":32,"y":35,"w":53,"h":52},
+	"sourceSize": {"w":119,"h":93}
+},
+"attackWeapon3_2.png":
+{
+	"frame": {"x":0,"y":350,"w":81,"h":68},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":19,"w":81,"h":68},
+	"sourceSize": {"w":119,"h":93}
+},
+"attackWeapon3_3.png":
+{
+	"frame": {"x":48,"y":266,"w":53,"h":84},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":32,"y":3,"w":53,"h":84},
+	"sourceSize": {"w":119,"h":93}
+},
+"dead_1.png":
+{
+	"frame": {"x":37,"y":0,"w":64,"h":25},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":24,"y":67,"w":64,"h":25},
+	"sourceSize": {"w":106,"h":96}
+},
+"hit_1.png":
+{
+	"frame": {"x":0,"y":0,"w":37,"h":49},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":36,"y":37,"w":37,"h":49},
+	"sourceSize": {"w":106,"h":96}
+},
+"idle_sword_1.png":
+{
+	"frame": {"x":46,"y":100,"w":46,"h":52},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":23,"y":35,"w":46,"h":52},
+	"sourceSize": {"w":93,"h":93}
+},
+"idle_sword_2.png":
+{
+	"frame": {"x":45,"y":49,"w":46,"h":51},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":23,"y":36,"w":46,"h":51},
+	"sourceSize": {"w":93,"h":93}
+},
+"idle_sword_3.png":
+{
+	"frame": {"x":0,"y":100,"w":46,"h":51},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":23,"y":36,"w":46,"h":51},
+	"sourceSize": {"w":93,"h":93}
+},
+"run_1.png":
+{
+	"frame": {"x":47,"y":152,"w":45,"h":57},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":24,"y":28,"w":45,"h":57},
+	"sourceSize": {"w":93,"h":93}
+},
+"run_2.png":
+{
+	"frame": {"x":0,"y":209,"w":45,"h":57},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":24,"y":22,"w":45,"h":57},
+	"sourceSize": {"w":93,"h":93}
+},
+"run_3.png":
+{
+	"frame": {"x":0,"y":49,"w":45,"h":47},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":24,"y":23,"w":45,"h":47},
+	"sourceSize": {"w":93,"h":93}
+},
+"run_4.png":
+{
+	"frame": {"x":0,"y":266,"w":48,"h":57},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":22,"y":30,"w":48,"h":57},
+	"sourceSize": {"w":93,"h":93}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "pirate2.png",
+	"format": "RGBA8888",
+	"size": {"w":101,"h":594},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:1d1b1abff50f247c4b85e24235a72fad:b000754d7d730aee2c2f095e9893c052:f78ec13479c23e77b553a91329f635e7$"
+}
+}

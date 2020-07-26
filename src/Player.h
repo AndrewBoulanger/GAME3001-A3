@@ -26,7 +26,11 @@ private:
 	bool m_FacingRight;
 	void m_buildAnimations();
 
+	void shoot();
+	void punch();
+
 	PlayerAnimationState m_currentAnimationState;
+	SDL_Texture* extraSprites;
 };
 
 #endif /* defined (__PLAYER__) */
