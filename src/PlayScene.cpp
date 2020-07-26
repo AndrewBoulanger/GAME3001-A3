@@ -61,80 +61,8 @@ void PlayScene::handleEvents()
 {
 	EventManager::Instance().update();
 
-	// handle player movement with GameController
-	//if (SDL_NumJoysticks() > 0)
-	//{
-	//	if (EventManager::Instance().getGameController(0) != nullptr)
-	//	{
-	//		const auto deadZone = 10000;
-	//		if (EventManager::Instance().getGameController(0)->LEFT_STICK_X > deadZone)
-	//		{
-	//			m_pPlayer->setAnimationState(PLAYER_RUN_RIGHT);
-	//			m_playerFacingRight = true;
-
-	//			m_pPlayer->getRigidBody()->velocity = glm::vec2(5.0f, 0.0f);
-	//			m_pPlayer->getTransform()->position += m_pPlayer->getRigidBody()->velocity;
-	//			m_pPlayer->getRigidBody()->velocity *= m_pPlayer->getRigidBody()->velocity * 0.9f;
-	//		}
-	//		else if (EventManager::Instance().getGameController(0)->LEFT_STICK_X < -deadZone)
-	//		{
-	//			m_pPlayer->setAnimationState(PLAYER_RUN_LEFT);
-	//			m_playerFacingRight = false;
-
-	//			m_pPlayer->getRigidBody()->velocity = glm::vec2(-5.0f, 0.0f);
-	//			m_pPlayer->getTransform()->position += m_pPlayer->getRigidBody()->velocity;
-	//			m_pPlayer->getRigidBody()->velocity *= m_pPlayer->getRigidBody()->velocity * 0.9f;
-	//		}
-	//		else
-	//		{
-	//			if (m_playerFacingRight)
-	//			{
-	//				m_pPlayer->setAnimationState(PLAYER_IDLE_RIGHT);
-	//			}
-	//			else
-	//			{
-	//				m_pPlayer->setAnimationState(PLAYER_IDLE_LEFT);
-	//			}
-	//		}
-	//	}
-	//}
-
-
-	//// handle player movement if no Game Controllers found
-	//if (SDL_NumJoysticks() < 1)
-	//{
-	//	if (EventManager::Instance().isKeyDown(SDL_SCANCODE_A))
-	//	{
-	//		m_pPlayer->setAnimationState(PLAYER_RUN_LEFT);
-	//		m_playerFacingRight = false;
-
-	//		m_pPlayer->getRigidBody()->velocity = glm::vec2(-5.0f, 0.0f);
-	//		m_pPlayer->getTransform()->position += m_pPlayer->getRigidBody()->velocity;
-	//		m_pPlayer->getRigidBody()->velocity *= m_pPlayer->getRigidBody()->velocity * 0.9f;
-	//	}
-	//	else if (EventManager::Instance().isKeyDown(SDL_SCANCODE_D))
-	//	{
-	//		m_pPlayer->setAnimationState(PLAYER_RUN_RIGHT);
-	//		m_playerFacingRight = true;
-
-	//		m_pPlayer->getRigidBody()->velocity = glm::vec2(5.0f, 0.0f);
-	//		m_pPlayer->getTransform()->position += m_pPlayer->getRigidBody()->velocity;
-	//		m_pPlayer->getRigidBody()->velocity *= m_pPlayer->getRigidBody()->velocity * 0.9f;
-	//	}
-	//	else
-	//	{
-	//		if (m_playerFacingRight)
-	//		{
-	//			m_pPlayer->setAnimationState(PLAYER_IDLE_RIGHT);
-	//		}
-	//		else
-	//		{
-	//			m_pPlayer->setAnimationState(PLAYER_IDLE_LEFT);
-	//		}
-	//	}
-	//}
-
 	m_pPlayer->update();
+
 	// H KEY Section
 	
 	if(!m_bDebugKeys[H_KEY])
@@ -317,6 +245,9 @@ void PlayScene::start()
 	
 	m_pPlaneSprite->m_setPath(m_pGrid[0], m_pGrid[Config::COL_NUM - 1],
 		m_pGrid[Config::COL_NUM * Config::ROW_NUM - 1], m_pGrid[Config::COL_NUM * Config::ROW_NUM - Config::COL_NUM]);
+
+	SoundManager::Instance().load("Assets/audio/game.mp3", "bgm", SOUND_MUSIC);
+	
 }
 
 

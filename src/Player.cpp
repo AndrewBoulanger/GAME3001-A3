@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "TextureManager.h"
 #include "EventManager.h"
+#include "SoundManager.h"
 
 Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
 {
@@ -8,6 +9,7 @@ Player::Player(): m_currentAnimationState(PLAYER_IDLE_RIGHT)
 		"../Assets/sprites/atlas.txt",
 		"../Assets/sprites/atlas.png", 
 		"spritesheet");
+	SoundManager::Instance().load("audio/metalWalk.wav", "pWalk", SOUND_SFX);
 
 	setSpriteSheet(TextureManager::Instance()->getSpriteSheet("spritesheet"));
 	
@@ -150,7 +152,17 @@ void Player::update()
 		m_FacingRight ? setAnimationState(PLAYER_RUN_RIGHT) : setAnimationState(PLAYER_RUN_LEFT);
 		getTransform()->position += getRigidBody()->velocity;
 		getRigidBody()->velocity *= getRigidBody()->velocity * 0.9f;
+		if (m_walkingSoundPlaying == false)
+		{
+			SoundManager::Instance().playSound("pWalk", 0, 0);
+			m_walkingSoundPlaying = true;
+		}
 	}
+	else
+	{
+		m_walkingSoundPlaying = false;
+	}
+	
 }
 
 void Player::clean()

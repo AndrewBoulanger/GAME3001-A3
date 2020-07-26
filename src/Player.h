@@ -22,7 +22,7 @@ public:
 	void setAnimationState(PlayerAnimationState new_state);
 
 private:
-	bool m_isMoving;
+	bool m_isMoving, m_walkingSoundPlaying;
 	bool m_FacingRight;
 	void m_buildAnimations();
 
