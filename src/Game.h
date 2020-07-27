@@ -21,6 +21,7 @@
 #include "EndScene.h"
 
 #include "Config.h"
+#include "Tile.h"
 
 class Game
 {
@@ -53,7 +54,6 @@ public:
 	Uint32 getFrames() const;
 	bool isRunning() const;
 	void changeSceneState(SceneState new_state);
-
 private:
 	Game();
 	~Game();

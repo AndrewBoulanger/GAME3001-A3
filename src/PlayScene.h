@@ -9,6 +9,8 @@
 #include "DebugKeys.h"
 #include "Obstacle.h"
 #include "PathNode.h"
+#include "Tile.h"
+#include <map>
 
 class PlayScene : public Scene
 {
@@ -32,6 +34,8 @@ private:
 
 	void m_setGridLOS();
 
+	void m_loadLevel();
+
 	// MEMBER VARIABLES
 	glm::vec2 m_mousePosition;
 
@@ -48,12 +52,12 @@ private:
 	bool m_bDebugKeys[NUM_OF_DEBUG_KEYS];
 
 	std::vector<PathNode*> m_pGrid;
+	std::vector<Tile*> m_pTiles;
+	std::map<char, Tile*> m_tileSet;
 
 	std::vector<PathNode*> m_pPatrolPath;
 	int m_targetNodeIndex;
 	PathNode* m_ptargetNode;
-	void m_move2TargetNode();
-
 	
 };
 

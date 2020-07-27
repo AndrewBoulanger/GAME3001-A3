@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "EventManager.h"
 #include "Util.h"
+#include <fstream>
 
 PlayScene::PlayScene()
 {
@@ -13,7 +14,12 @@ PlayScene::~PlayScene()
 
 void PlayScene::draw()
 {
+	for (int i = 0; i < m_pTiles.size(); i++)
+	{
+		m_pTiles[i]->draw();
+	}
 	drawDisplayList();
+
 
 	if(m_bDebugMode)
 	{
@@ -154,34 +160,53 @@ void PlayScene::handleEvents()
 void PlayScene::m_buildGrid()
 {
 	// Logic to add PathNodes to the scene
-	for (int row = 0; row < Config::ROW_NUM; ++row)
-	{
-		for (int col = 0; col < Config::COL_NUM; ++col)
-		{
-			auto pathNode = new PathNode();
-			pathNode->getTransform()->position = glm::vec2(pathNode->getWidth() * col + Config::TILE_SIZE * 0.5, pathNode->getHeight() * row + Config::TILE_SIZE * 0.5);
-			m_pGrid.push_back(pathNode);
-		}
-	}
+	TextureManager::Instance()->loadSpriteSheet("../Assets/textures/Tiles.txt", "../Assets/textures/Tiles.png", "tiles");
+	m_pGrid.reserve(70);
+	m_pGrid.reserve(74);
 
+	std::ifstream inFile("../Assets/textures/level1.txt");
+	if (inFile.is_open())
+	{
+		char key;
+		for (int row = 0; row < Config::ROW_NUM; ++row)
+		{
+			for (int col = 0; col < Config::COL_NUM; ++col)
+			{
+				inFile >> key;
+				auto temp = new Tile("grass", false);
+				addChild(temp);
+				auto pathNode = new PathNode();
+				pathNode->getTransform()->position = glm::vec2(pathNode->getWidth() * col + Config::TILE_SIZE * 0.5, pathNode->getHeight() * row + Config::TILE_SIZE * 0.5);
+				temp->getTransform()->position = pathNode->getTransform()->position;
+				m_pGrid.push_back(pathNode);
+				if (key == 'n')
+				{
+					auto temp2 = new Tile("collumn", true);
+					temp2->getTransform()->position = pathNode->getTransform()->position;
+					addChild(temp2);
+					m_pTiles.push_back(temp2);
+				}
+				m_pTiles.push_back(temp);
+			}
+		}
+
+	}
+	inFile.close();
 	std::cout << "Number of Nodes: " << m_pGrid.size() << std::endl;
 }
 
 void PlayScene::m_displayGrid()
 {
-	// Logic to add PathNodes to the scene
-	for (int row = 0; row < Config::ROW_NUM; ++row)
+	for (auto node : m_pGrid)
 	{
-		for (int col = 0; col < Config::COL_NUM; ++col)
-		{
-			auto colour = (!m_pGrid[row*Config::COL_NUM + col]->getLOS()) ? glm::vec4(1.0f, 0.0f, 0.0f, 1.0f) : glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
+		auto colour = (!node->getLOS()) ? glm::vec4(1.0f, 0.0f, 0.0f, 1.0f) : glm::vec4(0.0f, 1.0f, 0.0f, 1.0f);
 
-			Util::DrawRect(m_pGrid[row * Config::COL_NUM + col]->getTransform()->position - glm::vec2(m_pGrid[row * Config::COL_NUM + col]->getWidth() * 0.5f, m_pGrid[row * Config::COL_NUM + col]->getHeight() * 0.5f),
-				Config::TILE_SIZE, Config::TILE_SIZE);
+		Util::DrawRect(node->getTransform()->position - glm::vec2(node->getWidth() * 0.5f, node->getHeight() * 0.5f),
+			Config::TILE_SIZE, Config::TILE_SIZE);
 
-			Util::DrawRect(m_pGrid[row * Config::COL_NUM + col]->getTransform()->position, 5, 5, colour);
-		}
+		Util::DrawRect(node->getTransform()->position, 5, 5, colour);
 	}
+
 }
 
 void PlayScene::m_displayGridLOS()
@@ -204,6 +229,11 @@ void PlayScene::m_setGridLOS()
 	{
 		node->setLOS(CollisionManager::LOSCheck(node, m_pPlayer, m_pObstacle));
 	}
+}
+
+void PlayScene::m_loadLevel()
+{
+
 }
 
 void PlayScene::start()

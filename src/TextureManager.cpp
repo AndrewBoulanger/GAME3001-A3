@@ -380,3 +380,36 @@ SpriteSheet* TextureManager::getSpriteSheet(const std::string& name)
 	return m_spriteSheetMap[name];
 }
 
+void TextureManager::drawFrame(const std::string& sprite_sheet_name, Frame* frame, int x, int y, int w, int h, double angle, int alpha, bool centered, SDL_RendererFlip flip)
+{
+	SDL_Rect srcRect;
+	SDL_Rect destRect;
+
+	srcRect.x = frame->x;
+	srcRect.y = frame->y;
+
+	// frame_height size
+	const auto textureWidth = w;
+	const auto textureHeight = h;
+
+	srcRect.w = frame->w;
+	srcRect.h = frame->h;
+
+	destRect.w = textureWidth;
+	destRect.h = textureHeight;
+
+	if (centered) {
+		const int xOffset = textureWidth * 0.5;
+		const int yOffset = textureHeight * 0.5;
+		destRect.x = x - xOffset;
+		destRect.y = y - yOffset;
+	}
+	else {
+		destRect.x = x;
+		destRect.y = y;
+	}
+
+	SDL_SetTextureAlphaMod(m_textureMap[sprite_sheet_name].get(), alpha);
+	SDL_RenderCopyEx(Renderer::Instance()->getRenderer(), m_textureMap[sprite_sheet_name].get(), &srcRect, &destRect, angle, nullptr, flip);
+}
+

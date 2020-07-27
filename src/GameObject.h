@@ -38,6 +38,7 @@ public:
 	GameObjectType getType() const;
 	void setType(GameObjectType new_type);
 
+
 private:
 	// transform component
 	Transform m_transform;

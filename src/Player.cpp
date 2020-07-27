@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include "EventManager.h"
 #include "SoundManager.h"
+#include "CollisionManager.h"
 
 Player::Player(): m_currentAnimationState(PLAYER_IDLE)
 {
