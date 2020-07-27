@@ -48,8 +48,7 @@ void PlayScene::update()
 
 	m_setGridLOS();
 
-	if (m_bPatrolMode)
-		m_pEnemySprite->m_move2TargetNode();
+	m_pEnemySprite->update();
 }
 
 void PlayScene::clean()
@@ -97,7 +96,7 @@ void PlayScene::handleEvents()
 		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_K))
 		{
 			std::cout << "DEBUG: Enemies taking damage!" << std::endl;
-
+			m_pEnemySprite->takeDamage(1);
 			m_bDebugKeys[K_KEY] = true;
 		}
 	}
@@ -126,6 +125,7 @@ void PlayScene::handleEvents()
 			{
 				std::cout << "DEBUG: Patrol Mode Off" << std::endl;
 			}
+			m_pEnemySprite->setPatrolMode(m_bPatrolMode);
 		}
 	}
 
@@ -203,18 +203,6 @@ void PlayScene::m_setGridLOS()
 	for (auto node : m_pGrid)
 	{
 		node->setLOS(CollisionManager::LOSCheck(node, m_pPlayer, m_pObstacle));
-	}
-}
-
-
-
-void PlayScene::m_move2TargetNode()
-{
-	if (m_bPatrolMode)
-	{
-		m_ptargetNode = m_pPatrolPath[m_targetNodeIndex];
-		auto targetVector = Util::normalize(m_ptargetNode->getTransform()->position - m_pEnemySprite->getTransform()->position);
-
 	}
 }
 

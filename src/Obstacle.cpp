@@ -11,7 +11,7 @@ Obstacle::Obstacle()
 	setHeight(size.y);
 	getTransform()->position = glm::vec2(400.0f, 300.0f);
 	getRigidBody()->velocity = glm::vec2(0, 0);
-	getRigidBody()->isColliding = false;
+	getRigidBody()->isColliding = true;
 
 	setType(OBSTACLE);
 }

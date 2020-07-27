@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 #include "SceneState.h"
+#include <array>
+#include <map>
 
 #include <SDL.h>
 
@@ -51,7 +53,7 @@ public:
 	Uint32 getFrames() const;
 	bool isRunning() const;
 	void changeSceneState(SceneState new_state);
-	
+
 private:
 	Game();
 	~Game();

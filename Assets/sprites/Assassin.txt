@@ -1,7 +1,7 @@
 A-attack1 241 1 42 47
 A-attack2 1 1 41 56
 A-attack3 414 1 35 34
-A-dead 44 1 54 15
+A-dead 44 1 15 54
 A-hit 285 1 46 40
 A-idle1 208 1 31 48
 A-idle2 107 1 30 49

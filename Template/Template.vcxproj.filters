@@ -111,6 +111,7 @@
     <ClCompile Include="..\src\EnemyBase.cpp">
       <Filter>Game Objects</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\StartScene.h">
@@ -236,6 +237,7 @@
     <ClInclude Include="..\src\EnemyBase.h">
       <Filter>Game Objects</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Tile.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui.ini" />

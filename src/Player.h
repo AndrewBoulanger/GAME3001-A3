@@ -24,8 +24,12 @@ public:
 private:
 	bool m_isMoving, m_walkingSoundPlaying;
 	bool m_FacingRight;
+	int m_frameCount;
 	void m_buildAnimations();
 
+	void checkInput();
+	void returnToIdleState(int frames);
+	void move();
 	void shoot();
 	void punch();
 

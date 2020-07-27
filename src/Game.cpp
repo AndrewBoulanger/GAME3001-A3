@@ -2,9 +2,11 @@
 #include <algorithm>
 #include <ctime>
 #include <iomanip>
+#include <fstream>
 #include "glm/gtx/string_cast.hpp"
 #include "Renderer.h"
 #include "EventManager.h"
+#include "Tile.h"
 
 
 Game* Game::s_pInstance = nullptr;
@@ -86,6 +88,23 @@ bool Game::init(const char* title, const int x, const int y, const int width, co
 	}
 
 	std::cout << "init success" << std::endl;
+
+	std::ifstream inFile("Dat/Tiledata.txt");
+	if (inFile.is_open())
+	{ // Create map of Tile prototypes.
+		char key;
+		int x, y;
+		bool o, h;
+		while (!inFile.eof())
+		{
+			inFile >> key >> x >> y >> o >> h;
+			//m_tiles.emplace(key, new Tile({ x * 32, y * 32, 32, 32 }, { 0,0,32,32 }, o));
+		}
+	}
+	inFile.close();
+
+
+
 	m_bRunning = true; // everything initialized successfully - start the main loop
 
 	return true;
